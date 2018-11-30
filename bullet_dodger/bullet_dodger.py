@@ -302,7 +302,7 @@ def game_loop():
         if not paused:
             draw_repeating_background(background_img)
 
-            if score.points >= 2000:
+            if score.points >= 1500:
                 bullets_per_gust = 3000
                 max_bullet_speed = 80
             elif score.points >= 1000:
@@ -310,28 +310,27 @@ def game_loop():
                 min_bullet_speed = 3
                 max_bullet_speed = 15
             elif score.points >= 800:
-                max_bullet_speed = 20
-            elif score.points >= 600:
-                bullets_per_gust = 2
-                max_bullet_speed = 10
+                max_bullet_speed = 7
             elif score.points >= 500:
-                min_bullet_speed = 2
+                bullets_per_gust = 2
+                max_bullet_speed = 6
             elif score.points >= 400:
-                max_bullet_speed = 8
+                min_bullet_speed = 2
+            elif score.points >= 300:
+                max_bullet_speed = 5
             elif score.points >= 200:
                 # The smaller this number is, the probability for a bullet
                 # to be shot is higher
-                odds = 8
-                max_bullet_speed = 5
-            elif score.points >= 100:
-                odds = 9
                 max_bullet_speed = 4
-            elif score.points >= 60:
+            elif score.points >= 150:
                 odds = 10
                 max_bullet_speed = 3
-            elif score.points >= 30:
-                odds = 11
+            elif score.points >= 100:
+                odds = 15
                 max_bullet_speed = 2
+            elif score.points >= 50:
+                odds = 20
+                max_bullet_speed = 1
 
             if random.randint(1, odds) == 1:
                 if random.randint(1, odds * 10) == 1:
@@ -360,7 +359,7 @@ def game_loop():
                     score.save_highest_score()
                 return 'game_over_screen'
             elif bonus:
-                score.points += 10
+                score.points += 50
                 bonus.kill()
 
             if score.points > score.high_score:
