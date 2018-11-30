@@ -80,7 +80,7 @@ fps_clock = pygame.time.Clock()
 FPS = 60
 # Preload resources
 default_font = pygame.font.Font(None, 28)
-ground_texture = os.path.join(ASSETS, 'ground.gif')
+ground_texture = os.path.join(ASSETS, 'ground.png')
 background_img = pygame.image.load(ground_texture)
 bullet_fire_sound = os.path.join(ASSETS, 'gun_fire.ogg')
 game_music = os.path.join(ASSETS, 'Hitman.ogg')
@@ -132,7 +132,8 @@ class Score:
 class Block(pygame.sprite.Sprite):
     def __init__(self):
         super(Block, self).__init__()
-        self.img = pygame.image.load(os.path.join(ASSETS, 'hero.png'))
+        self.img = pygame.Surface((30, 30))
+        self.img.fill(YELLOW)
         self.rect = self.img.get_rect()
         self.centerx = self.rect.centerx
         self.centery = self.rect.centery
@@ -151,14 +152,26 @@ class Block(pygame.sprite.Sprite):
 class Bonus(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super(Bonus, self).__init__()
-        self.image = pygame.image.load(os.path.join(ASSETS, 'star.png'))
+        self.image = pygame.Surface((15, 15))
+        self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.x = x - self.rect.centerx
         self.rect.y = y - self.rect.centery
 
 
-def random_bullet(speed):
-    random_or = random.randint(1, 4)
+def random_bullet(speed, score_points, direction):
+
+    if (score_points >= 300):
+        direction = random.randint(1, 4)
+    elif (score_points >= 200) and (score_points < 300):
+        direction = random.randint(1, 3)
+    elif (score_points >= 100) and (score_points < 200):
+        direction = random.randint(1, 2)
+    elif (score_points < 100):
+        direction = random.randint(1, 1)
+
+
+    random_or = random.randint(1, direction) #directions
     if random_or == 1:  # Up -> Down
         return Bullet(random.randint(0, WIDTH), 0, 0, speed)
     elif random_or == 2:  # Right -> Left
@@ -273,13 +286,14 @@ def game_loop():
     bullets = pygame.sprite.Group()
     bonuses = pygame.sprite.Group()
     global score
+    global direction
     score = Score()
     min_bullet_speed = 1
     max_bullet_speed = 1
     bullets_per_gust = 1
     odds = 12
     paused = False
-
+    direction = random.randint(1, 4)
     while True:
         pygame.display.update()
         fps_clock.tick(FPS)
@@ -325,7 +339,7 @@ def game_loop():
                     bonuses.add(bonus)
                 for i in range(bullets_per_gust):
                     bullets.add(random_bullet(random.randint(min_bullet_speed,
-                                                             max_bullet_speed)))
+                                                             max_bullet_speed), score.points, direction))
                     score.points += 1
             draw_text(_('{}  points').format(score.points), default_font, screen,
                       100, 20, DARK_ALLOY_ORANGE)
