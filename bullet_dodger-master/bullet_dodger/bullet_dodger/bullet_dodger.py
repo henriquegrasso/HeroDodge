@@ -36,7 +36,7 @@ gettext.install("bullet_dodger", os.path.join(os.path.dirname(__file__), 'locale
 
 """Parse command line arguments."""
 parser = argparse.ArgumentParser(description=PROGRAM_DESCRIPTION,
-                                 prog=_('Bullet dodger'))
+                                 prog=_('Hero Dodger'))
 parser.add_argument('--version', action='version',
                     version='%(prog)s ' + __version__,
                     help=_('output version information and exit'))
@@ -72,7 +72,7 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 fullscreen = False
 # Window titlebar
-pygame.display.set_caption(_('Bullet dodger'))
+pygame.display.set_caption(_('Hero Dodge'))
 game_icon = os.path.join(ASSETS, 'bullet.png')
 pygame.display.set_icon(pygame.image.load(game_icon))
 # Timing
@@ -82,6 +82,8 @@ FPS = 60
 default_font = pygame.font.Font(None, 28)
 ground_texture = os.path.join(ASSETS, 'ground.png')
 background_img = pygame.image.load(ground_texture)
+start_screen_background = os.path.join(ASSETS, 'ground.gif')
+background_start_img =  pygame.image.load(start_screen_background)
 bullet_fire_sound = os.path.join(ASSETS, 'gun_fire.ogg')
 game_music = os.path.join(ASSETS, 'Hitman.ogg')
 pygame.mixer.music.load(game_music)
@@ -252,16 +254,17 @@ def toggle_fullscreen():
 
 def start_screen():
     pygame.mouse.set_cursor(*pygame.cursors.diamond)
+    draw_repeating_background(background_start_img)
     title_font = pygame.font.Font('freesansbold.ttf', 65)
     big_font = pygame.font.Font(None, 36)
     default_font = pygame.font.Font(None, 28)
-    draw_text(_('BULLET DODGER'), title_font, screen,
+    draw_text(_('HERO DODGE'), title_font, screen,
               WIDTH / 2, HEIGHT / 3, RED, YELLOW)
-    draw_text(_('Use the mouse to dodge the bullets'), big_font, screen,
+    draw_text(_('Use o mouse para desviar dos tiros'), big_font, screen,
               WIDTH / 2, HEIGHT / 2, GREEN, BLACK)
-    draw_text(_("Press any mouse button or S when you're ready"),
+    draw_text(_("Aperte qualquer tecla do mouse ou S para iniciar o jogo"),
               default_font, screen, WIDTH / 2, HEIGHT / 1.7, GREEN, BLACK)
-    draw_text(_('Press F11 to toggle full screen'), default_font, screen,
+    draw_text(_('Pressione F11 para mudar para tela cheia'), default_font, screen,
               WIDTH / 2, HEIGHT / 1.1, GREEN, BLACK)
     pygame.display.update()
     for event in pygame.event.get():
@@ -413,6 +416,7 @@ def game_loop():
 def game_over_screen():
     global score
     pygame.mouse.set_visible(True)
+    draw_repeating_background(background_start_img)
     # Text
     draw_text(_('{}  points').format(score.points), default_font, screen,
               100, 20, GREEN)
@@ -423,13 +427,13 @@ def game_over_screen():
     transp_surf.set_alpha(200)
     screen.blit(transp_surf, transp_surf.get_rect())
 
-    draw_text(_("You've lost"), pygame.font.Font(None, 40), screen,
+    draw_text(_("Você foi atingido :("), pygame.font.Font(None, 40), screen,
               WIDTH / 2, HEIGHT / 3, RED)
-    draw_text(_('To play again press C or any mouse button'),
+    draw_text(_('Aperte qualquer tecla para jogar novamente.'),
               default_font, screen, WIDTH / 2, HEIGHT / 2.1, GREEN)
-    draw_text(_('To quit the game press Q'), default_font, screen,
+    draw_text(_('Pressione Q para sair'), default_font, screen,
               WIDTH / 2, HEIGHT / 1.9, GREEN)
-    draw_text(_('Press F11 to toggle full screen'), default_font, screen,
+    draw_text(_('Pressione F11 para mudar para tela cheia'), default_font, screen,
               WIDTH / 2, HEIGHT / 1.1, GREEN, BLACK)
 
     pygame.display.update()
