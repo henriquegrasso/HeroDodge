@@ -159,6 +159,17 @@ class Bonus(pygame.sprite.Sprite):
         self.rect.y = y - self.rect.centery
 
 
+# def random_bullet(speed):
+#     random_or = random.randint(1, 4)
+#     if random_or == 1:  # Up -> Down
+#         return Bullet(random.randint(0, WIDTH), 0, 0, speed)
+#     elif random_or == 2:  # Right -> Left
+#         return Bullet(WIDTH, random.randint(0, HEIGHT), -speed, 0)
+#     elif random_or == 3:  # Down -> Up
+#         return Bullet(random.randint(0, WIDTH), HEIGHT, 0, -speed)
+#     elif random_or == 4:  # Left -> Right
+#         return Bullet(0, random.randint(0, HEIGHT), speed, 0)
+
 def random_bullet(speed):
     random_or = random.randint(1, 4)
     if random_or == 1:  # Up -> Down
