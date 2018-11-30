@@ -1,23 +1,4 @@
-# -*- coding: utf-8 -*-
-# Code of the game
-
-# Copyright (C) 2016-2017 Jorge Maldonado Ventura
-
-# This file is part of Bullet Dodger
-
-# Bullet dodger is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-
-# Bullet dodger is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
-# You should have received a copy of the GNU General Public License
-# along with Bullet dodger.  If not, see <http://www.gnu.org/licenses/>.
-
+# -*- encoding: utf-8 -*-
 from __future__ import division
 
 import argparse
@@ -85,9 +66,9 @@ background_img = pygame.image.load(ground_texture)
 start_screen_background = os.path.join(ASSETS, 'ground.gif')
 background_start_img =  pygame.image.load(start_screen_background)
 bullet_fire_sound = os.path.join(ASSETS, 'gun_fire.ogg')
-game_music = os.path.join(ASSETS, 'Hitman.ogg')
+blip_star = os.path.join(ASSETS, 'blip_star.ogg')
+game_music = os.path.join(ASSETS, 'Hitman.ogx')
 pygame.mixer.music.load(game_music)
-
 
 def get_config_dir():
     """Get user's configuration directory."""
@@ -129,7 +110,6 @@ class Score:
     def save_highest_score(self):
         with open(self.HIGHEST_SCORE_PATH, 'w') as highest_score_file:
             highest_score_file.write(str(self.high_score))
-
 
 class Block(pygame.sprite.Sprite):
     def __init__(self):
@@ -262,7 +242,7 @@ def start_screen():
               WIDTH / 2, HEIGHT / 2, GREEN, BLACK)
     draw_text(_("Aperte qualquer tecla do mouse ou S para iniciar o jogo"),
               default_font, screen, WIDTH / 2, HEIGHT / 1.7, GREEN, BLACK)
-    draw_text(_('Pressione F11 para mudar para tela cheia'), default_font, screen,
+    draw_text(_('Pressione F11 para mudar o tamanho da tela'), default_font, screen,
               WIDTH / 2, HEIGHT / 1.1, GREEN, BLACK)
     pygame.display.update()
     for event in pygame.event.get():
@@ -360,6 +340,8 @@ def game_loop():
                 return 'game_over_screen'
             elif bonus:
                 score.points += 50
+                sound = pygame.mixer.Sound(blip_star)
+                sound.play()
                 bonus.kill()
 
             if score.points > score.high_score:
@@ -424,13 +406,13 @@ def game_over_screen():
     transp_surf.set_alpha(200)
     screen.blit(transp_surf, transp_surf.get_rect())
 
-    draw_text(_("Você foi atingido :("), pygame.font.Font(None, 40), screen,
+    draw_text(_("Voce foi atingido :("), pygame.font.Font(None, 40), screen,
               WIDTH / 2, HEIGHT / 3, RED)
     draw_text(_('Aperte qualquer tecla para jogar novamente.'),
               default_font, screen, WIDTH / 2, HEIGHT / 2.1, GREEN)
     draw_text(_('Pressione Q para sair'), default_font, screen,
               WIDTH / 2, HEIGHT / 1.9, GREEN)
-    draw_text(_('Pressione F11 para mudar para tela cheia'), default_font, screen,
+    draw_text(_('Pressione F11 para mudar o tamanho da tela'), default_font, screen,
               WIDTH / 2, HEIGHT / 1.1, GREEN, BLACK)
 
     pygame.display.update()
