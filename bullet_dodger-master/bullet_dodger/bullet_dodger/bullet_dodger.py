@@ -80,7 +80,7 @@ fps_clock = pygame.time.Clock()
 FPS = 60
 # Preload resources
 default_font = pygame.font.Font(None, 28)
-ground_texture = os.path.join(ASSETS, 'ground.png')
+ground_texture = os.path.join(ASSETS, 'ground.gif')
 background_img = pygame.image.load(ground_texture)
 bullet_fire_sound = os.path.join(ASSETS, 'gun_fire.ogg')
 game_music = os.path.join(ASSETS, 'Hitman.ogg')
@@ -132,8 +132,7 @@ class Score:
 class Block(pygame.sprite.Sprite):
     def __init__(self):
         super(Block, self).__init__()
-        self.img = pygame.Surface((30, 30))
-        self.img.fill(YELLOW)
+        self.img = pygame.image.load(os.path.join(ASSETS, 'hero.png'))
         self.rect = self.img.get_rect()
         self.centerx = self.rect.centerx
         self.centery = self.rect.centery
@@ -152,8 +151,7 @@ class Block(pygame.sprite.Sprite):
 class Bonus(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super(Bonus, self).__init__()
-        self.image = pygame.Surface((15, 15))
-        self.image.fill(RED)
+        self.image = pygame.image.load(os.path.join(ASSETS, 'star.png'))
         self.rect = self.image.get_rect()
         self.rect.x = x - self.rect.centerx
         self.rect.y = y - self.rect.centery
